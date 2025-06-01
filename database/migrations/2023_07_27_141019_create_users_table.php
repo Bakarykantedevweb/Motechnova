@@ -19,14 +19,21 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('photo')->nullable();
+            $table->string('adresse')->nullable();
+            $table->string('telephone')->nullable();
+            $table->foreignId('role_id')->constrained();
+            $table->foreignId('role_type_user_id')->constrained('role_type_users')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });
         DB::table('users')->insert([
             [
-                'name' => 'Motechnova',
+                'name' => 'MOTECHNOVA',
                 'email' => 'superadmin@gmail.com',
                 'password' => Hash::make('password'),
+                'role_id' => 1,
+                'role_type_user_id' => 2,
             ],
         ]);
     }
@@ -34,8 +41,12 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+   public function down(): void
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign('role_type_user_id');
+            $table->dropForeign('role_id');
+        });
         Schema::dropIfExists('users');
     }
 };
