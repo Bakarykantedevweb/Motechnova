@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/theme.min.css') }}">
     <link rel="canonical" href="{{ url('admin/dashbord') }}" />
     <title>Dashboard | Motechnova</title>
+    @livewireStyles
 </head>
 
 <body>
@@ -58,6 +59,8 @@
     <script src="{{ asset('assets/js/vendors/chart.js') }}"></script>
     <script src="{{ asset('assets/libs/flatpickr/dist/flatpickr.min.js') }}"></script>
     <script src="{{ asset('assets/js/vendors/flatpickr.js') }}"></script>
+     @yield('script')
+    @livewireScripts
 </body>
 
 <!-- Mirrored from geeksui.codescandy.com/geeks/pages/dashboard/admin-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 19 Dec 2024 17:17:48 GMT -->
