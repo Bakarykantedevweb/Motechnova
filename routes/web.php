@@ -1,11 +1,19 @@
 <?php
 
-use App\Http\Controllers\Admin\DashbordController;
-use App\Http\Controllers\Admin\DroitController;
-use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\DroitController;
+use App\Http\Controllers\Admin\DashbordController;
+use App\Http\Controllers\Admin\CategorieController;
+use App\Http\Controllers\Admin\FormateurController;
+use App\Http\Controllers\Frontend\FrontendFormationController;
+use App\Http\Controllers\AuthFormateur\LoginFormateurController;
+use App\Http\Controllers\Formateur\DashboardFormateurController;
+use App\Http\Controllers\Formateur\FormationFormateurController;
+use App\Http\Controllers\AuthFormateur\RegisterFormateurController;
 
 
 
@@ -21,13 +29,45 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
 Route::get('/', function () {
     return view('frontend.index');
 });
 
-Auth::routes();
+// Routes Frontend
+Route::controller(FrontendFormationController::class)->group(function () {
+    Route::get('formations', 'index');
+});
 
-Route::get('/admin/dashboard', [DashbordController::class, 'index']);
+// Route pour l'authentification Formateur
+Route::prefix('formateur')->middleware(['guest_formateur'])->group(function () {
+
+    Route::controller(RegisterFormateurController::class)->group(function () {
+        Route::get('register', 'index');
+    });
+    Route::controller(LoginFormateurController::class)->group(function () {
+        Route::get('login', 'index');
+    });
+});
+
+Route::prefix('formateur')->middleware('auth_formateur')->group(function () {
+
+    Route::controller(DashboardFormateurController::class)->group(function () {
+        Route::get('/dashboard', 'index');
+        Route::post('/logout','logout')->name('formateur/logout');
+    });
+
+    Route::controller(FormationFormateurController::class)->group(function(){
+        Route::get('formations','index');
+        Route::get('formations/create','create');
+    });
+});
+
+
+
+// Routes Admin
+Route::get('/admin/dashboard', [DashbordController::class, 'index'])->name('admin.dashboard');
+Route::get('admin/404', [DashbordController::class, 'page404'])->name('admin.404');
 Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     Route::controller(UserController::class)->group(function () {
@@ -40,11 +80,18 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::post('/getDroit', 'getDroit');
         Route::post('/exceptDroit', 'exceptDroit');
         Route::post('roles/update', 'update')->name('role.update');
-        Route::post('roles/delet', 'destroy')->name('role.delete');
+        Route::post('roles/delete', 'destroy')->name('role.delete');
     });
 
     Route::controller(DroitController::class)->group(function () {
         Route::get('droits', 'index')->name('droit.index');
     });
 
+    Route::controller(CategorieController::class)->group(function () {
+        Route::get('categories', 'index')->name('categorie.index');
+    });
+
+    Route::controller(FormateurController::class)->group(function () {
+        Route::get('formateurs', 'index')->name('formateur.index');
+    });
 });

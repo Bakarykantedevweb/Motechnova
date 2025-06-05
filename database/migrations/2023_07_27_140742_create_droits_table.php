@@ -40,6 +40,18 @@ return new class extends Migration
                 'route' => 'user.index',
                 'type_droit_id' => 3,
             ],
+            [
+                'nom' => 'Categories',
+                'acces' => 1,
+                'route' => 'categorie.index',
+                'type_droit_id' => 1,
+            ],
+            [
+                'nom' => 'Formateurs',
+                'acces' => 1,
+                'route' => 'formateur.index',
+                'type_droit_id' => 1,
+            ],
         ]);
     }
 
