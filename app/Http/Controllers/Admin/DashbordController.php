@@ -16,4 +16,9 @@ class DashbordController extends Controller
     {
         return view('admin.index');
     }
+
+    public function page404()
+    {
+        return view('admin.404');
+    }
 }

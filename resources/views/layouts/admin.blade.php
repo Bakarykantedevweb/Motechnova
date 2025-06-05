@@ -15,11 +15,13 @@
 
     <!-- darkmode js -->
     <script src="{{ asset('assets/js/vendors/darkMode.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Libs CSS -->
     <link href="{{ asset('assets/fonts/feather/feather.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/libs/bootstrap-icons/font/bootstrap-icons.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/libs/simplebar/dist/simplebar.min.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('assets/libs/dropzone/dist/dropzone.css') }}">
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/theme.min.css') }}">
@@ -59,6 +61,8 @@
     <script src="{{ asset('assets/js/vendors/chart.js') }}"></script>
     <script src="{{ asset('assets/libs/flatpickr/dist/flatpickr.min.js') }}"></script>
     <script src="{{ asset('assets/js/vendors/flatpickr.js') }}"></script>
+    <script src="{{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendors/choices.js') }}"></script>
      @yield('script')
     @livewireScripts
 </body>
