@@ -83,6 +83,8 @@
                             </table>
                         </div>
                     </div>
+                    <br>
+                    {{ $droits->links() }}
                 </div>
             </div>
         </div>

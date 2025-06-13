@@ -18,7 +18,7 @@ class Create extends Component
 
     public $categories;
     public $nom, $categorie_id, $prix_original, $prix_promotion, $date_creation;
-    public $niveau, $image, $description;
+    public $niveau, $image, $description, $large_description;
     public $video_presentation;
     public $modules = [];
 
@@ -33,14 +33,14 @@ class Create extends Component
         return [
             'nom' => 'required|string',
             'categorie_id' => 'nullable|exists:categories,id',
-            'prix_original' => 'required|numeric|min:1',
+            'prix_original' => 'nullable|numeric|min:1',
             'prix_promotion' => 'nullable|numeric|min:0',
             'date_creation' => 'required|date',
             'niveau' => 'required|string',
             'image' => 'required|image|max:2048', // 2MB
             'description' => 'required|string',
+            'large_description' => 'required|string',
             'selectedOption' => 'required|in:Oui,Non',
-            'video_presentation' => $this->selectedOption === 'Oui' ? 'required|mimes:mp4,mov,avi|max:10240' : 'nullable', // 10MB
         ];
     }
 
@@ -83,7 +83,6 @@ class Create extends Component
         $this->validate();
 
         $imagePath = null;
-        $videoPath = null;
 
         // Upload image dans public/formations/images
         if ($this->image) {
@@ -101,9 +100,10 @@ class Create extends Component
             'date_creation' => $this->date_creation,
             'niveau' => $this->niveau,
             'image' => $imagePath,
-            'video_presentation' => $videoPath,
+            'video_presentation' => $this->video_presentation,
             'payante' => $this->selectedOption,
             'description' => $this->description,
+            'large_description' => $this->large_description,
             'formateur_id' => auth('formateur')->id(),
         ]);
 

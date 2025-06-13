@@ -36,12 +36,12 @@
                         </div>
                         <div class="d-flex flex-column gap-1">
                             <h2 class="fw-bold mb-0">$10,800</h2>
-                            <div class="d-flex flex-row gap-2">
+                            {{-- <div class="d-flex flex-row gap-2">
                                 <span class="text-success fw-semibold">
                                     <i class="fe fe-trending-up me-1"></i>
                                     +20.9$
                                 </span>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -61,10 +61,9 @@
                         </div>
                         <div class="d-flex flex-column gap-1">
                             <h2 class="fw-bold mb-0">2,456</h2>
-                            <div class="d-flex flex-row gap-2">
+                            {{-- <div class="d-flex flex-row gap-2">
                                 <span class="text-danger fw-semibold">120+</span>
-                                <span class="fw-medium">Number of pending</span>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -84,13 +83,13 @@
                         </div>
                         <div class="d-flex flex-column gap-1">
                             <h2 class="fw-bold mb-0">1,22,456</h2>
-                            <div class="d-flex flex-row gap-2">
+                            {{-- <div class="d-flex flex-row gap-2">
                                 <span class="text-success fw-semibold">
                                     <i class="fe fe-trending-up me-1"></i>
                                     +1200
                                 </span>
                                 <span class="fw-medium">Students</span>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -110,13 +109,13 @@
                         </div>
                         <div class="d-flex flex-column gap-1">
                             <h2 class="fw-bold mb-0">22,786</h2>
-                            <div class="d-flex flex-row gap-1">
+                            {{-- <div class="d-flex flex-row gap-1">
                                 <span class="text-success fw-semibold">
                                     <i class="fe fe-trending-up me-1"></i>
                                     +200
                                 </span>
                                 <span class="ms-1 fw-medium">Instructor</span>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
