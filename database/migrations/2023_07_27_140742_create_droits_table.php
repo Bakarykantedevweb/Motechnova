@@ -52,6 +52,12 @@ return new class extends Migration
                 'route' => 'formateur.index',
                 'type_droit_id' => 1,
             ],
+            [
+                'nom' => 'Formations',
+                'acces' => 1,
+                'route' => 'formation.index',
+                'type_droit_id' => 1,
+            ],
         ]);
     }
 

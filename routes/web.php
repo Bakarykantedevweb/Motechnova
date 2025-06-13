@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\DroitController;
 use App\Http\Controllers\Admin\DashbordController;
 use App\Http\Controllers\Admin\CategorieController;
 use App\Http\Controllers\Admin\FormateurController;
+use App\Http\Controllers\Admin\FormationController;
 use App\Http\Controllers\Frontend\FrontendFormationController;
 use App\Http\Controllers\AuthFormateur\LoginFormateurController;
 use App\Http\Controllers\Formateur\DashboardFormateurController;
@@ -37,6 +38,8 @@ Route::get('/', function () {
 // Routes Frontend
 Route::controller(FrontendFormationController::class)->group(function () {
     Route::get('formations', 'index');
+    Route::get('formations/{nom}', 'detail');
+    Route::get('formations/{nom}/free', 'detailFree');
 });
 
 // Route pour l'authentification Formateur
@@ -93,5 +96,9 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     Route::controller(FormateurController::class)->group(function () {
         Route::get('formateurs', 'index')->name('formateur.index');
+    });
+
+    Route::controller(FormationController::class)->group(function(){
+        Route::get('formations','index')->name('formation.index');
     });
 });
