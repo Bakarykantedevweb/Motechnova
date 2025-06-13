@@ -1,89 +1,140 @@
 <div>
-    <section class="container-fluid p-4">
+    <section class="container-fluid py-4">
+        <!-- En-tête -->
         <div class="row">
-            <!-- Page Header -->
-            <div class="col-lg-12 col-md-12 col-12">
-                <div class="border-bottom pb-3 mb-3 d-flex justify-content-between align-items-center">
-                    <div class="d-flex flex-column gap-1">
-                        <h1 class="mb-0 h2 fw-bold">
-                            Gestion des Formations
-                        </h1>
-                        <!-- Breadcrumb  -->
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="{{ route('admin.dashboard') }}">Dashboard</a>
-                                </li>
-                                <li class="breadcrumb-item active" aria-current="page">
-                                    Gestion des Formations
-                                </li>
-                            </ol>
-                        </nav>
+            <div class="col-12 d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold">📚 Gestion des Formations</h2>
+                    <p class="text-muted">Liste des formations disponibles et leurs détails</p>
+                </div>
+                <a href="{{ url('formateur/formations/create') }}" class="btn btn-primary">
+                    + Nouvelle Formation
+                </a>
+            </div>
+        </div>
+
+        @if (!$selectedFormation)
+            <!-- Barre de recherche -->
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <input type="text" wire:model.debounce.300ms="search" class="form-control"
+                        placeholder="🔍 Rechercher une formation...">
+                </div>
+            </div>
+
+            <!-- Liste des formations -->
+            <div class="row">
+                @forelse ($formations as $formation)
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card shadow-sm h-100">
+                            <img src="{{ asset($formation->image) }}" class="card-img-top rounded-top" height="180"
+                                style="object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $formation->nom }}</h5>
+                                <p class="text-muted mb-2">Ajoutée le {{ \Carbon\Carbon::parse($formation->date_creation)->format('d M Y') }}</p>
+                                <span class="badge bg-{{ $formation->status == 1 ? 'success' : 'warning' }}">
+                                    {{ $formation->status == 1 ? 'Approuvée' : 'En attente' }}
+                                </span>
+                            </div>
+                            <div class="card-footer bg-white d-flex justify-content-between">
+                                <button wire:click="showDetail({{ $formation->id }})" class="btn btn-sm btn-outline-primary">
+                                    👁️ Voir Détail
+                                </button>
+                                <a href="#" class="btn btn-sm btn-outline-secondary">✏️ Modifier</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="nav btn-group" role="tablist">
-                        <div>
-                            <a href="{{ url('formateur/formations/create') }}"
-                                class="btn btn-primary">Ajouter une Formation</a>
+                @empty
+                    <div class="col-12">
+                        <p class="text-center text-muted">Aucune formation trouvée.</p>
+                    </div>
+                @endforelse
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-3">
+                {{ $formations->links() }}
+            </div>
+        @else
+            <!-- Détail de la formation -->
+            <div class="row">
+                <!-- Détails généraux -->
+                <div class="col-md-12 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header d-flex justify-content-between align-items-center bg-light">
+                            <h4 class="fw-bold text-primary">📘 Détail de la Formation : {{ $selectedFormation->nom }}</h4>
+                            <button wire:click="backToList" class="btn btn-outline-secondary btn-sm">← Retour</button>
+                        </div>
+                        <div class="card-body row">
+                            <div class="col-md-4">
+                                <img src="{{ asset($selectedFormation->image) }}" class="img-fluid rounded shadow-sm" style="object-fit: cover;">
+                            </div>
+                            <div class="col-md-8">
+                                <p><strong>Description :</strong> {{ $selectedFormation->description }}</p>
+                                <p><strong>Prix Original :</strong> 
+                                    {{ number_format($selectedFormation->prix_original, 0, ',', ' ') }} FCFA
+                                </p>
+                                <p><strong>Prix Promo :</strong> 
+                                    {{ $selectedFormation->prix_promotion ? number_format($selectedFormation->prix_promotion, 0, ',', ' ') . ' FCFA' : 'Aucun' }}
+                                </p>
+                                <p><strong>Niveau :</strong> {{ ucfirst($selectedFormation->niveau) }}</p>
+                                <p><strong>Type :</strong> {{ ucfirst($selectedFormation->payante) }}</p>
+                                <p><strong>Date Création :</strong> {{ \Carbon\Carbon::parse($selectedFormation->date_creation)->format('d M Y') }}</p>
+                                <p><strong>Catégorie :</strong> {{ $selectedFormation->categorie->nom ?? 'N/A' }}</p>
+                                <p><strong>Status :</strong>
+                                    <span class="badge bg-{{ $selectedFormation->status == 1 ? 'success' : ($selectedFormation->status == 2 ? 'danger' : 'warning') }}">
+                                        {{ $selectedFormation->status == 1 ? 'Approuvée' : ($selectedFormation->status == 2 ? 'Rejetée' : 'En attente') }}
+                                    </span>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-12">
-                <!-- Tab -->
-                <div class="tab-content">
-                    <!-- card -->
-                    <div class="card">
-                        <!-- table -->
-                        <div class="table-responsive">
-                            <table class="table mb-0 text-nowrap table-hover table-centered">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th style="width: 30px;">#</th>
-                                        <th>Nom</th>
-                                        <th>Prenom</th>
-                                        <th>Email</th>
-                                        <th>Telephone</th>
-                                        <th class="text-center">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{-- @foreach ($formateurs as $formateur)
-                                        <tr @if ($formateur->is_blocked == 1) style="background-color: #f87171;" @endif>
-                                            <td>{{ $formateur->id }}</td>
-                                            <td>
-                                                <div class="d-flex align-items-center flex-row gap-2">
-                                                    <img src="{{ asset('assets/images/avatar/avatar-12.jpg') }}"
-                                                        alt="" class="rounded-circle avatar-md" />
-                                                    <h5 class="mb-0">{{ $formateur->nom }}</h5>
-                                                </div>
-                                            </td>
-                                            <td>{{ $formateur->prenom }}</td>
-                                            <td>{{ $formateur->email }}</td>
-                                            <td>{{ $formateur->telephone }}</td>
-                                            <td class="text-center">
-                                                <a href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#bs-example-modal-lg"
-                                                    class="btn btn-sm bg-success-light me-2 update_modal">
-                                                    <i class="fe fe-info"></i>
-                                                </a>
-                                                @if ($formateur->is_blocked == 1)
-                                                    <a href="#" wire:click="debloquer({{ $formateur->id }})"
-                                                        data-bs-toggle="modal" data-bs-target="#unlockTrainerModal"
-                                                        class="btn btn-sm bg-success-light me-2 update_modal">
-                                                        <i class="fe fe-unlock"></i>
-                                                    </a>
+
+                <!-- Modules & Chapitres -->
+                <div class="col-md-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-light">
+                            <h5 class="fw-bold text-dark">📦 Modules & 🎬 Chapitres</h5>
+                        </div>
+                        <div class="card-body">
+                            @forelse ($selectedFormation->modules as $module)
+                                <div class="mb-4">
+                                    <h4 class="text-primary fw-bold mb-3">📘 Module : {{ $module->titre }}</h4>
+
+                                    @forelse ($module->chapitres as $chapitre)
+                                        <div class="card mb-3 border-start border-3 border-primary shadow-sm">
+                                            <div class="card-body">
+                                                <h5 class="card-title mb-2 text-secondary">📄 {{ $chapitre->nom }}</h5>
+                                                
+                                                {{-- Affichage vidéo YouTube --}}
+                                                @php
+                                                    preg_match('/[\\?&]v=([^&#]*)/', $chapitre->url_video, $matches);
+                                                    $videoId = $matches[1] ?? null;
+                                                @endphp
+
+                                                @if ($videoId)
+                                                    <div class="ratio ratio-16x9 mt-2">
+                                                        <iframe src="https://www.youtube.com/embed/{{ $videoId }}" frameborder="0"
+                                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                            allowfullscreen></iframe>
+                                                    </div>
+                                                @else
+                                                    <p class="text-danger mt-2">Lien vidéo non valide ou manquant</p>
                                                 @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach --}}
-                                </tbody>
-                            </table>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <p class="text-muted">Aucun chapitre pour ce module.</p>
+                                    @endforelse
+                                </div>
+                            @empty
+                                <p class="text-muted">Aucun module pour cette formation.</p>
+                            @endforelse
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
     </section>
 </div>
