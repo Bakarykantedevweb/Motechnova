@@ -39,7 +39,6 @@
                         <div class="card-body p-lg-6">
                             <!-- form -->
                             <form wire:submit.prevent="saveFormation" class="row gx-3 needs-validation">
-
                                 <div class="mb-3 col-6">
                                     <label class="form-label">
                                         Nom de la formation <span class="text-danger">*</span>
@@ -62,33 +61,58 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-
-                                <div class="mb-3 col-md-6 col-12">
-                                    <label class="form-label">
-                                        Prix Original <span class="text-danger">*</span>
-                                    </label>
-                                    <input class="form-control" type="number" min="1"
-                                        wire:model.defer="prix_original" required />
-                                    @error('prix_original')
+                                <div class="mb-3 col-md-12 col-12">
+                                    <label class="form-label">Formation Payante</label>
+                                    <select class="form-control" wire:model="selectedOption">
+                                        <option value="">---</option>
+                                        @foreach ($options as $option => $inputType)
+                                            <option value="{{ $option }}">{{ $option }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('selectedOption')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                @if ($selectedOption === 'Oui')
+                                    <div class="mb-3 col-md-6 col-12">
+                                        <label class="form-label">
+                                            Prix Original <span class="text-danger">*</span>
+                                        </label>
+                                        <input class="form-control" type="number" min="1"
+                                            wire:model.defer="prix_original" required />
+                                        @error('prix_original')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
 
-                                <div class="mb-3 col-md-6 col-12">
-                                    <label class="form-label">Prix Promotion</label>
-                                    <input class="form-control" type="number" min="1"
-                                        wire:model.defer="prix_promotion" />
-                                    @error('prix_promotion')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                                    <div class="mb-3 col-md-6 col-12">
+                                        <label class="form-label">Prix Promotion</label>
+                                        <input class="form-control" type="number" min="1"
+                                            wire:model.defer="prix_promotion" />
+                                        @error('prix_promotion')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
 
+                                    <div class="mb-3 col-12">
+                                        <label class="form-label">
+                                            Video de presentation
+                                        </label>
+                                        <div wire:ignore>
+                                            <input type="text" class="form-control"
+                                                wire:model.defer="video_presentation" />
+                                        </div>
+                                        @error('video_presentation')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                @endif
                                 <div class="mb-3 col-md-6 col-12">
                                     <label class="form-label">
                                         Date de création <span class="text-danger">*</span>
                                     </label>
                                     <div class="input-group me-3">
-                                        <input class="form-control flatpickr" type="text"
+                                        <input class="form-control flatpickr" type="date"
                                             wire:model="date_creation" />
                                         <span class="input-group-text"><i class="fe fe-calendar"></i></span>
                                     </div>
@@ -110,7 +134,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="mb-3 col-6">
+                                <div class="mb-3 col-12">
                                     <label class="form-label">
                                         Image de la formation <span class="text-danger">*</span>
                                     </label>
@@ -119,41 +143,20 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-
-                                <div class="mb-3 col-md-6 col-12">
-                                    <label class="form-label">Formation Payante</label>
-                                    <select class="form-control" wire:model="selectedOption">
-                                        <option value="">---</option>
-                                        @foreach ($options as $option => $inputType)
-                                            <option value="{{ $option }}">{{ $option }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('selectedOption')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                @if ($selectedOption == 'Oui')
-                                    <div class="mb-3 col-12">
-                                        <label class="form-label">
-                                            Video de presentation 
-                                        </label>
-                                        <input type="text" placeholder="https://www.youtube.com/..." class="form-control" wire:model="video_presentation" />
-                                        @error('video_presentation')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                @endif
                                 <div class="mb-3 col-12">
-                                    <label class="form-label">Description</label>
+                                    <label class="form-label">Petite Description</label>
                                     <textarea class="form-control" wire:model.defer="description" rows="3" required></textarea>
                                     @error('description')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
-                                <div class="col-12 mb-3">
-                                    <button class="btn btn-primary" wire:click.prevent="addModule" type="button"> <i
-                                            class="fe fe-plus-circle"></i> Ajouter un module</button>
+                                <div class="mb-3 col-12">
+                                    <label class="form-label">Large Description</label>
+                                    <textarea class="form-control" wire:model.defer="large_description" rows="5" required></textarea>
+                                    @error('large_description')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="col-12 mb-3">
                                     <h5>Modules</h5>
@@ -202,9 +205,9 @@
                                         </div>
                                     @endforeach
 
-                                    {{-- <button class="btn btn-primary" type="button" wire:click="addModule">
+                                    <button class="btn btn-primary" type="button" wire:click="addModule">
                                         <i class="fe fe-plus-circle"></i> Ajouter un module
-                                    </button> --}}
+                                    </button>
                                 </div>
                                 <!-- button -->
                                 <div class="col-12">
