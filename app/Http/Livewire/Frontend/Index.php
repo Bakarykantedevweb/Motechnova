@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Frontend;
 
+use App\Models\Cart;
 use Livewire\Component;
 use App\Models\Formation;
 
@@ -11,7 +12,7 @@ class Index extends Component
 
     public function mount()
     {
-        $this->formations = Formation::where('status', 1)->orderBy('id','desc')->limit(4)->get();
+        $this->formations = Formation::where('status', 1)->orderBy('id', 'desc')->limit(4)->get();
     }
     public function render()
     {
