@@ -7,29 +7,23 @@ use Livewire\Component;
 class DetailFree extends Component
 {
     public $formation;
-    public $videoEmbedUrl;
+  public $videoUrl;
 
-    public function mount()
+    public function mount($formation)
     {
-        // Initialisation avec la première vidéo du premier chapitre si possible
-        $firstChapitre = $this->formation->modules->first()?->chapitres->first();
-        if ($firstChapitre) {
-            $this->videoEmbedUrl = $this->makeEmbedUrl($firstChapitre->url_video);
-        } else {
-            $this->videoEmbedUrl = "https://www.youtube.com/embed/jmfK0qWdMkY"; // fallback
+        $this->formation = $formation;
+        $this->videoUrl = 'https://www.youtube.com/embed/MUVKyLYWnfI'; // Valeur par défaut
+    }
+
+    public function changeVideo($url)
+    {
+        // Extraire l'ID depuis l'URL (youtube.com/watch?v=xxx)
+        preg_match('/[\\?&]v=([^&#]*)/', $url, $matches);
+        $videoId = $matches[1] ?? null;
+
+        if ($videoId) {
+            $this->videoUrl = "https://www.youtube.com/embed/" . $videoId;
         }
-    }
-
-    public function setVideo($url)
-    {
-        $this->videoEmbedUrl = $this->makeEmbedUrl($url);
-    }
-
-    private function makeEmbedUrl($url)
-    {
-        preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|embed)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match);
-        $id = $match[1] ?? null;
-        return $id ? "https://www.youtube.com/embed/" . $id : "";
     }
 
     public function render()
