@@ -1,4 +1,4 @@
 @extends('layouts.frontend')
 @section('content')
-   @livewire('auth-etudiant.login')
+   @livewire('auth-etudiant.register')
 @endsection

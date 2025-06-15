@@ -13,12 +13,14 @@
                                     aria-expanded="{{ $index == 0 ? 'true' : 'false' }}"
                                     aria-controls="module-{{ $index }}">
                                     <span>{{ $module->titre }}</span>
+                                    <i class="fe fe-chevron-down fs-4"></i>
                                 </button>
 
                                 <div id="module-{{ $index }}" class="collapse {{ $index == 0 ? 'show' : '' }}"
                                     data-bs-parent="#modulesAccordion">
                                     @foreach ($module->chapitres as $chapitre)
-                                        <button class="lesson-item" wire:click="setVideo('{{ $chapitre->url_video }}')">
+                                        <button class="lesson-item"
+                                            wire:click="changeVideo('{{ $chapitre->url_video }}')">
                                             <span>{{ $chapitre->nom }}</span>
                                         </button>
                                     @endforeach
@@ -33,45 +35,12 @@
             <div class="col-lg-9">
                 <div class="main-content">
                     <!-- Video Section -->
-                    <div class="video-container" wire:ignore>
-                        <iframe id="video-iframe" src="{{ $videoEmbedUrl }}" title="Video Player" allowfullscreen
-                            width="100%" height="400px" frameborder="0">
+                    <h2>{{ $formation->nom }}</h2>
+                    <div class="video-container">
+                        <iframe src="{{ $videoUrl }}" frameborder="0" allowfullscreen
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
                         </iframe>
                     </div>
-
-                    <!-- Resources Section -->
-                    <div class="resources-section">
-                        <h4>Resources</h4>
-                        <p>Download the course materials and additional resources to enhance your learning experience.
-                            These files complement the video content and provide hands-on practice opportunities.</p>
-
-                        <div class="resource-links">
-                            <a href="#" class="resource-link">
-                                <i class="fas fa-file-pdf"></i>
-                                <span>JavaScript Fundamentals - Course Notes.pdf</span>
-                            </a>
-                            <a href="#" class="resource-link">
-                                <i class="fas fa-file-code"></i>
-                                <span>Sample Code - Hello World Project.zip</span>
-                            </a>
-                            <a href="#" class="resource-link">
-                                <i class="fas fa-file-alt"></i>
-                                <span>JavaScript Cheat Sheet.pdf</span>
-                            </a>
-                            <a href="#" class="resource-link">
-                                <i class="fas fa-link"></i>
-                                <span>Recommended Reading - MDN JavaScript Guide</span>
-                            </a>
-                        </div>
-
-                        <div class="alert alert-info mt-4" role="alert">
-                            <i class="fas fa-lightbulb me-2"></i>
-                            <strong>Pro Tip:</strong> Make sure to download and review the course notes before starting
-                            each lesson. The sample code files contain working examples that you can run and modify on
-                            your local machine.
-                        </div>
-                    </div>
-
                     <!-- Comments Section -->
                     <div class="comments-section">
                         <h4>Comments</h4>

@@ -723,9 +723,17 @@
                                 <del class="fs-4">{{ number_format($formation->prix_promotion, 0, ',', ' ') }}
                                     FCFA</del>
                             </div>
-                            <div class="d-grid">
-                                <a href="#" class="btn btn-primary mb-2">Ajouter au panier</a>
-                            </div>
+                            @if (Auth::guard('etudiant')->check())
+                                <div class="d-grid">
+                                    <button type="button" wire:click="savePanier({{ $formation->id }})"
+                                        class="btn btn-primary mb-2">Achetez</button>
+                                </div>
+                            @else
+                                <div class="d-grid">
+                                    <a href="{{ url('etudiant/login') }}"
+                                        class="btn btn-primary mb-2">Se Connecter</a>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <div class="card">
@@ -783,7 +791,8 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <span class="badge bg-info-soft">{{ $formationSimilaire->categorie->nom }}</span>
+                                        <span
+                                            class="badge bg-info-soft">{{ $formationSimilaire->categorie->nom }}</span>
                                         <a href="#" class="fs-5"><i class="fe fe-heart align-middle"></i></a>
                                     </div>
                                     <h4 class="mb-2 text-truncate-line-2">

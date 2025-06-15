@@ -95,11 +95,12 @@
                                                             @foreach ($categories as $categorie)
                                                                 <li class="d-flex flex-row gap-2">
                                                                     <div class="form-check">
-                                                                        <input class="form-check-input filter-checkbox"
-                                                                            type="checkbox" name="flexReact"
-                                                                            id="flexReact" />
+                                                                        <input wire:model="categorie_ids"
+                                                                            class="form-check-input filter-checkbox"
+                                                                            type="checkbox" value="{{ $categorie->id }}"
+                                                                            id="categorie{{ $categorie->id }}" />
                                                                         <label class="form-check-label text-secondary"
-                                                                            for="flexReact">{{ $categorie->nom }}</label>
+                                                                            for="categorie{{ $categorie->id }}">{{ $categorie->nom }}</label>
                                                                     </div>
                                                                 </li>
                                                             @endforeach
@@ -130,29 +131,31 @@
                                                     <ul class="list-unstyled mb-0 d-flex flex-column gap-1 mt-3">
                                                         <li class="d-flex flex-row gap-2">
                                                             <div class="form-check">
-                                                                <input class="form-check-input filter-checkbox"
-                                                                    type="radio" name="flexAll" id="flexAll" />
+                                                                <input wire:model="prix" class="form-check-input"
+                                                                    type="radio" value="" id="prixTous" />
                                                                 <label class="form-check-label text-secondary"
-                                                                    for="flexAll">Tous</label>
+                                                                    for="prixTous">Tous</label>
                                                             </div>
                                                         </li>
                                                         <li class="d-flex flex-row gap-2">
                                                             <div class="form-check">
-                                                                <input class="form-check-input filter-checkbox"
-                                                                    type="radio" name="flexAll" id="flexFree" />
+                                                                <input wire:model="prix" class="form-check-input"
+                                                                    type="radio" value="gratuit"
+                                                                    id="prixGratuit" />
                                                                 <label class="form-check-label text-secondary"
-                                                                    for="flexFree">Gratuit</label>
+                                                                    for="prixGratuit">Gratuit</label>
                                                             </div>
                                                         </li>
                                                         <li class="d-flex flex-row gap-2">
                                                             <div class="form-check">
-                                                                <input class="form-check-input filter-checkbox"
-                                                                    type="radio" name="flexAll" id="flexPaid" />
+                                                                <input wire:model="prix" class="form-check-input"
+                                                                    type="radio" value="payant" id="prixPayant" />
                                                                 <label class="form-check-label text-secondary"
-                                                                    for="flexPaid">Payé</label>
+                                                                    for="prixPayant">Payant</label>
                                                             </div>
                                                         </li>
                                                     </ul>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -184,33 +187,23 @@
                                                                     for="flexCheckAll">Tous niveaux</label>
                                                             </div>
                                                         </li>
-                                                        <li class="d-flex flex-row gap-2">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input filter-checkbox"
-                                                                    type="checkbox" value=""
-                                                                    id="flexCheckBeginner" />
-                                                                <label class="form-check-label"
-                                                                    for="flexCheckBeginner">Débutant</label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="d-flex flex-row gap-2">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input filter-checkbox"
-                                                                    type="checkbox" value=""
-                                                                    id="flexCheckIntermediate" />
-                                                                <label class="form-check-label"
-                                                                    for="flexCheckIntermediate">Intermédiaire</label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="d-flex flex-row gap-2">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input filter-checkbox"
-                                                                    type="checkbox" value=""
-                                                                    id="flexCheckExpert" />
-                                                                <label class="form-check-label"
-                                                                    for="flexCheckExpert">Expert</label>
-                                                            </div>
-                                                        </li>
+                                                        @php
+                                                            $niveaux = ['Débutant', 'Intermédiaire', 'Expert'];
+                                                        @endphp
+
+                                                        @foreach ($niveaux as $niveauOption)
+                                                            <li class="d-flex flex-row gap-2">
+                                                                <div class="form-check">
+                                                                    <input wire:model="niveaux"
+                                                                        class="form-check-input" type="checkbox"
+                                                                        value="{{ $niveauOption }}"
+                                                                        id="niveau{{ $niveauOption }}" />
+                                                                    <label class="form-check-label text-secondary"
+                                                                        for="niveau{{ $niveauOption }}">{{ $niveauOption }}</label>
+                                                                </div>
+                                                            </li>
+                                                        @endforeach
+
                                                     </ul>
                                                 </div>
                                             </div>
@@ -270,7 +263,7 @@
                                                                 <a href="{{ url('formations/' . $formation->nom) }}"
                                                                     class="text-reset">{{ $formation->nom }}</a>
                                                             @else
-                                                                <a href="{{ url('formations/' . $formation->nom.'/free') }}"
+                                                                <a href="{{ url('formations/' . $formation->nom . '/free') }}"
                                                                     class="text-reset">{{ $formation->nom }}</a>
                                                             @endif
 
@@ -310,7 +303,5 @@
                 </div>
             </div>
         </div>
-</div>
-</section>
-<!--Course List-->
+    </section>
 </div>
