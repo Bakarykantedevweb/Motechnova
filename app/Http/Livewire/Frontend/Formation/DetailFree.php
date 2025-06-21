@@ -3,34 +3,45 @@
 namespace App\Http\Livewire\Frontend\Formation;
 
 use Livewire\Component;
+use Illuminate\Support\Str;
 
 class DetailFree extends Component
 {
     public $formation;
-    public $videoEmbedUrl;
+    public $videoUrl;
 
-    public function mount()
+    public function mount($formation)
     {
-        // Initialisation avec la première vidéo du premier chapitre si possible
-        $firstChapitre = $this->formation->modules->first()?->chapitres->first();
-        if ($firstChapitre) {
-            $this->videoEmbedUrl = $this->makeEmbedUrl($firstChapitre->url_video);
-        } else {
-            $this->videoEmbedUrl = "https://www.youtube.com/embed/jmfK0qWdMkY"; // fallback
+        $this->formation = $formation;
+        $this->videoUrl = 'https://www.youtube.com/embed/MUVKyLYWnfI'; // Valeur par défaut
+    }
+
+    public function changeVideo($url)
+    {
+        $this->videoUrl = null;
+
+        if (Str::contains($url, ['youtube.com', 'youtu.be'])) {
+            // Extraire l'ID YouTube
+            preg_match('/(?:v=|\/)([0-9A-Za-z_-]{11})/', $url, $matches);
+            $videoId = $matches[1] ?? null;
+
+            if ($videoId) {
+                $this->videoUrl = "https://www.youtube.com/embed/" . $videoId;
+            }
+        } elseif (Str::contains($url, 'vimeo.com')) {
+            // Extraire l'ID Vimeo
+            preg_match('/vimeo\.com\/(\d+)/', $url, $matches);
+            $videoId = $matches[1] ?? null;
+
+            if ($videoId) {
+                $this->videoUrl = "https://player.vimeo.com/video/" . $videoId;
+            }
+        } elseif (Str::contains($url, 'bunnycdn.com')) {
+            // Pour Bunny, on utilise l'URL directement
+            $this->videoUrl = $url;
         }
     }
 
-    public function setVideo($url)
-    {
-        $this->videoEmbedUrl = $this->makeEmbedUrl($url);
-    }
-
-    private function makeEmbedUrl($url)
-    {
-        preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|embed)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match);
-        $id = $match[1] ?? null;
-        return $id ? "https://www.youtube.com/embed/" . $id : "";
-    }
 
     public function render()
     {

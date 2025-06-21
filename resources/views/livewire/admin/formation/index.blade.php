@@ -86,7 +86,7 @@
                                 <div class="col-md-8">
                                     <p><strong>Description :</strong> {{ $selectedFormation->description }}</p>
                                     <p><strong>Prix Original :</strong>
-                                       @if ($selectedFormation->prix_original)
+                                        @if ($selectedFormation->prix_original)
                                             {{ number_format($selectedFormation->prix_original, 0, ',', ' ') }} FCFA
                                         @else
                                             Aucun
@@ -123,47 +123,83 @@
                                 <h5 class="fw-bold">📦 Modules & 🎬 Chapitres</h5>
                             </div>
                             <div class="card-body">
-                                @forelse ($selectedFormation->modules as $module)
+                                @foreach ($selectedFormation->modules as $index => $module)
                                     <div class="mb-4">
-                                        <h3 class="text-primary fw-bold mb-2">📘 Module : {{ $module->titre }}</h3>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h4 class="text-primary fw-bold">📘 Module : {{ $module->titre }}</h4>
+                                            <button class="btn btn-sm btn-outline-secondary"
+                                                wire:click="toggleModule({{ $index }})">
+                                                {{ $modulesOuverts[$index] ?? false ? 'Replier 🔼' : 'Déplier 🔽' }}
+                                            </button>
+                                        </div>
 
-                                        @foreach ($module->chapitres as $chapitre)
-                                            <div class="card mb-3">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">{{ $chapitre->nom }}</h5>
+                                        @if ($modulesOuverts[$index] ?? false)
+                                            @forelse ($module->chapitres as $chapitre)
+                                                <div class="card mb-4 border-start border-4 border-primary shadow">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title mb-3 text-secondary">📄
+                                                            {{ $chapitre->nom }}
+                                                        </h5>
 
-                                                    {{-- Affichage vidéo YouTube --}}
-                                                    @php
-                                                        // Extraire l'ID de la vidéo à partir du lien YouTube
-preg_match(
-    '/[\\?&]v=([^&#]*)/',
-                                                            $chapitre->url_video,
-                                                            $matches,
-                                                        );
-                                                        $videoId = $matches[1] ?? null;
-                                                    @endphp
+                                                        {{-- Gestion vidéo --}}
+                                                        @php
+                                                            $url = $chapitre->url_video;
+                                                            $isYoutube = Str::contains($url, [
+                                                                'youtube.com',
+                                                                'youtu.be',
+                                                            ]);
+                                                            $isVimeo = Str::contains($url, 'vimeo.com');
+                                                            $isBunny = Str::contains($url, 'bunnycdn.com');
+                                                            $videoId = null;
 
-                                                    @if ($videoId)
-                                                        <div class="ratio ratio-16x9">
-                                                            <iframe
-                                                                src="https://www.youtube.com/embed/{{ $videoId }}"
-                                                                frameborder="0"
-                                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                                allowfullscreen>
-                                                            </iframe>
+                                                            if ($isYoutube) {
+                                                                preg_match(
+                                                                    '/(?:v=|\/)([0-9A-Za-z_-]{11})/',
+                                                                    $url,
+                                                                    $matches,
+                                                                );
+                                                                $videoId = $matches[1] ?? null;
+                                                            } elseif ($isVimeo) {
+                                                                preg_match('/vimeo\.com\/(\d+)/', $url, $matches);
+                                                                $videoId = $matches[1] ?? null;
+                                                            }
+                                                        @endphp
+
+                                                        <div class="video-container mt-3"
+                                                            style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                                                            @if ($isYoutube && $videoId)
+                                                                <iframe
+                                                                    src="https://www.youtube.com/embed/{{ $videoId }}"
+                                                                    frameborder="0"
+                                                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                                    allowfullscreen></iframe>
+                                                            @elseif ($isVimeo && $videoId)
+                                                                <iframe
+                                                                    src="https://player.vimeo.com/video/{{ $videoId }}"
+                                                                    frameborder="0"
+                                                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                                                                    allow="autoplay; fullscreen; picture-in-picture"
+                                                                    allowfullscreen></iframe>
+                                                            @elseif ($isBunny)
+                                                                <iframe src="{{ $url }}" frameborder="0"
+                                                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                                                                    allow="autoplay; fullscreen"
+                                                                    allowfullscreen></iframe>
+                                                            @else
+                                                                <p class="text-danger">Lien vidéo non reconnu ou
+                                                                    invalide
+                                                                </p>
+                                                            @endif
                                                         </div>
-                                                    @else
-                                                        <p class="text-danger">Vidéo non valide ou lien manquant</p>
-                                                    @endif
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        @endforeach
-
+                                            @empty
+                                                <p class="text-muted">Aucun chapitre pour ce module.</p>
+                                            @endforelse
+                                        @endif
                                     </div>
-                                    <hr>
-                                @empty
-                                    <p class="text-muted">Aucun module pour cette formation.</p>
-                                @endforelse
+                                @endforeach
                             </div>
                         </div>
                     </div>
