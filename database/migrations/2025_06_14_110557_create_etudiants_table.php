@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('telephone')->unique();
             $table->string('password');
             $table->string('photo')->nullable();
+            $table->string('adresse')->nullable();
+            $table->string('pays')->nullable();
+            $table->string('ville')->nullable();
             $table->integer('login_attempts')->default(0);
             $table->integer('is_blocked')->default(0);
             $table->timestamps();

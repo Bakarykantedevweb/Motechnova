@@ -16,6 +16,9 @@ class Index extends Component
     protected $updatesQueryString = ['search'];
     protected $paginationTheme = 'bootstrap';
 
+    public $modulesOuverts = [];
+
+
     public function updatingSearch()
     {
         $this->resetPage();
@@ -24,6 +27,18 @@ class Index extends Component
     public function showDetail($formationId)
     {
         $this->selectedFormation = Formation::with('modules.chapitres')->findOrFail($formationId);
+
+        // Tous les modules sont repliés par défaut
+        $this->modulesOuverts = [];
+
+        foreach ($this->selectedFormation->modules as $index => $module) {
+            $this->modulesOuverts[$index] = false;
+        }
+    }
+
+    public function toggleModule($index)
+    {
+        $this->modulesOuverts[$index] = !$this->modulesOuverts[$index];
     }
 
 

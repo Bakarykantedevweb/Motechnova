@@ -162,41 +162,51 @@
                                     <h5>Modules</h5>
                                     @foreach ($modules as $index => $module)
                                         <div class="card p-3 mb-3">
-                                            <div class="mb-2">
-                                                <label>Titre du Module {{ $index + 1 }}</label>
-                                                <input type="text" class="form-control"
-                                                    wire:model="modules.{{ $index }}.titre" />
-                                            </div>
-
-                                            <div class="mb-2">
-                                                <h6>Chapitres</h6>
-                                                @foreach ($module['chapitres'] as $chapitreIndex => $chapitre)
-                                                    <div class="border rounded p-2 mb-2">
-                                                        <div class="mb-2">
-                                                            <label class="form-label">Nom du chapitre
-                                                                {{ $chapitreIndex + 1 }}</label>
-                                                            <input type="text" class="form-control"
-                                                                wire:model="modules.{{ $index }}.chapitres.{{ $chapitreIndex }}.nom"
-                                                                placeholder="Titre du chapitre">
-                                                        </div>
-                                                        <div class="mb-2">
-                                                            <label class="form-label">URL de la vidéo</label>
-                                                            <input type="text" class="form-control"
-                                                                wire:model="modules.{{ $index }}.chapitres.{{ $chapitreIndex }}.url_video"
-                                                                placeholder="https://youtube.com/...">
-                                                        </div>
-                                                        <button type="button" class="btn btn-danger btn-sm"
-                                                            wire:click="removeChapitre({{ $index }}, {{ $chapitreIndex }})">
-                                                            Supprimer ce chapitre
-                                                        </button>
-                                                    </div>
-                                                @endforeach
-
-                                                <button type="button" class="btn btn-outline-primary btn-sm"
-                                                    wire:click="addChapitre({{ $index }})">
-                                                    + Ajouter un chapitre
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <h6 class="mb-0">Module {{ $index + 1 }}</h6>
+                                                <button type="button" class="btn btn-sm btn-secondary"
+                                                    wire:click="toggleModule({{ $index }})">
+                                                    {{ $modulesCollapsed[$index] ?? false ? 'Déplier' : 'Replier' }}
                                                 </button>
                                             </div>
+
+                                            @if (!($modulesCollapsed[$index] ?? false))
+                                                <div class="mb-2">
+                                                    <label>Titre du Module {{ $index + 1 }}</label>
+                                                    <input type="text" class="form-control"
+                                                        wire:model="modules.{{ $index }}.titre" />
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <h6>Chapitres</h6>
+                                                    @foreach ($module['chapitres'] as $chapitreIndex => $chapitre)
+                                                        <div class="border rounded p-2 mb-2">
+                                                            <div class="mb-2">
+                                                                <label class="form-label">Nom du chapitre
+                                                                    {{ $chapitreIndex + 1 }}</label>
+                                                                <input type="text" class="form-control"
+                                                                    wire:model="modules.{{ $index }}.chapitres.{{ $chapitreIndex }}.nom"
+                                                                    placeholder="Titre du chapitre">
+                                                            </div>
+                                                            <div class="mb-2">
+                                                                <label class="form-label">URL de la vidéo</label>
+                                                                <input type="text" class="form-control"
+                                                                    wire:model="modules.{{ $index }}.chapitres.{{ $chapitreIndex }}.url_video"
+                                                                    placeholder="https://youtube.com/...">
+                                                            </div>
+                                                            <button type="button" class="btn btn-danger btn-sm"
+                                                                wire:click="removeChapitre({{ $index }}, {{ $chapitreIndex }})">
+                                                                Supprimer ce chapitre
+                                                            </button>
+                                                        </div>
+                                                    @endforeach
+
+                                                    <button type="button" class="btn btn-outline-primary btn-sm"
+                                                        wire:click="addChapitre({{ $index }})">
+                                                        + Ajouter un chapitre
+                                                    </button>
+                                                </div>
+                                            @endif
 
                                             <button type="button" class="btn btn-outline-danger btn-sm mt-2"
                                                 wire:click="removeModule({{ $index }})">
@@ -204,6 +214,7 @@
                                             </button>
                                         </div>
                                     @endforeach
+
 
                                     <button class="btn btn-primary" type="button" wire:click="addModule">
                                         <i class="fe fe-plus-circle"></i> Ajouter un module

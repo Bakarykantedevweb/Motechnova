@@ -37,7 +37,7 @@ class Index extends Component
         }
 
         return view('livewire.frontend.formation.index', [
-            'formations' => $formations->paginate(6),
+            'formations' => $formations->where('status', 1)->paginate(3),
             'categories' => $categories,
         ]);
     }
