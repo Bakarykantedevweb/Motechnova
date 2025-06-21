@@ -5,7 +5,7 @@
                 <!-- Card -->
                 <div class="card shadow">
                     <!-- Card body -->
-                    <div class="card-body p-6 d-flex flex-column gap-4">
+                    <div class="card-body p-4 d-flex flex-column gap-4">
                         <div>
                             <div class="d-flex flex-column gap-1">
                                 <h1 class="mb-0 fw-bold text-center">Création de compte Formateur</h1>
