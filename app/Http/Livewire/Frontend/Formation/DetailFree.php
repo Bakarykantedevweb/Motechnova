@@ -3,11 +3,12 @@
 namespace App\Http\Livewire\Frontend\Formation;
 
 use Livewire\Component;
+use Illuminate\Support\Str;
 
 class DetailFree extends Component
 {
     public $formation;
-  public $videoUrl;
+    public $videoUrl;
 
     public function mount($formation)
     {
@@ -17,14 +18,30 @@ class DetailFree extends Component
 
     public function changeVideo($url)
     {
-        // Extraire l'ID depuis l'URL (youtube.com/watch?v=xxx)
-        preg_match('/[\\?&]v=([^&#]*)/', $url, $matches);
-        $videoId = $matches[1] ?? null;
+        $this->videoUrl = null;
 
-        if ($videoId) {
-            $this->videoUrl = "https://www.youtube.com/embed/" . $videoId;
+        if (Str::contains($url, ['youtube.com', 'youtu.be'])) {
+            // Extraire l'ID YouTube
+            preg_match('/(?:v=|\/)([0-9A-Za-z_-]{11})/', $url, $matches);
+            $videoId = $matches[1] ?? null;
+
+            if ($videoId) {
+                $this->videoUrl = "https://www.youtube.com/embed/" . $videoId;
+            }
+        } elseif (Str::contains($url, 'vimeo.com')) {
+            // Extraire l'ID Vimeo
+            preg_match('/vimeo\.com\/(\d+)/', $url, $matches);
+            $videoId = $matches[1] ?? null;
+
+            if ($videoId) {
+                $this->videoUrl = "https://player.vimeo.com/video/" . $videoId;
+            }
+        } elseif (Str::contains($url, 'bunnycdn.com')) {
+            // Pour Bunny, on utilise l'URL directement
+            $this->videoUrl = $url;
         }
     }
+
 
     public function render()
     {

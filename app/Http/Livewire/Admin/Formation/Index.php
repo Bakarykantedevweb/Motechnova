@@ -16,6 +16,8 @@ class Index extends Component
     protected $updatesQueryString = ['search'];
     protected $paginationTheme = 'bootstrap';
 
+    public $modulesOuverts = [];
+
     public $formation_id;
 
     public function updatingSearch()
@@ -26,6 +28,18 @@ class Index extends Component
     public function showDetail($formationId)
     {
         $this->selectedFormation = Formation::with('modules.chapitres')->findOrFail($formationId);
+
+        // Tous les modules sont repliés par défaut
+        $this->modulesOuverts = [];
+
+        foreach ($this->selectedFormation->modules as $index => $module) {
+            $this->modulesOuverts[$index] = false;
+        }
+    }
+
+    public function toggleModule($index)
+    {
+        $this->modulesOuverts[$index] = !$this->modulesOuverts[$index];
     }
 
 
@@ -41,7 +55,7 @@ class Index extends Component
 
     public function approuver()
     {
-        $formation = Formation::where('id',$this->formation_id)->first();
+        $formation = Formation::where('id', $this->formation_id)->first();
         $formation->status = 1;
         $formation->save();
         toastr()->success("Formation Approuvee avec success");
@@ -50,7 +64,7 @@ class Index extends Component
 
     public function rejeter()
     {
-        $formation = Formation::where('id',$this->formation_id)->first();
+        $formation = Formation::where('id', $this->formation_id)->first();
         $formation->status = 2;
         $formation->save();
         toastr()->success("Formation Approuvee avec success");

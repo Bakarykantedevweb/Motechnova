@@ -83,11 +83,8 @@ Page content START -->
                                             </td>
                                             <!-- Action item -->
                                             <td>
-                                                <a href="#"
-                                                    class="btn btn-sm btn-success-soft px-2 me-1 mb-1 mb-md-0"><i
-                                                        class="far fa-fw fa-edit"></i></a>
-                                                <button class="btn btn-sm btn-danger-soft px-2 mb-0"><i
-                                                        class="fas fa-fw fa-times"></i></button>
+                                                <button type="button" wire:click="removeCart({{ $cart->id }})" class="btn btn-sm btn-danger-soft px-2 mb-0"><i
+                                                        class="fe fe-trash"></i></button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -119,7 +116,7 @@ Page content START -->
 
                         <!-- Button -->
                         <div class="d-grid">
-                            <a href="" class="btn btn-lg btn-success">Passer à la caisse</a>
+                            <a href="{{ url('checkouts') }}" class="btn btn-lg btn-success">Passer à la caisse</a>
                         </div>
 
                         <!-- Content -->
