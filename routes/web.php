@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\DashbordController;
 use App\Http\Controllers\Admin\CategorieController;
 use App\Http\Controllers\Admin\FormateurController;
 use App\Http\Controllers\Admin\FormationController;
+use App\Http\Controllers\Frontend\FrontendCartController;
+use App\Http\Controllers\Frontend\FrontendCheckoutController;
 use App\Http\Controllers\AuthEtudiant\LoginEtudiantController;
 use App\Http\Controllers\Etudiant\DashboardEtudiantController;
 use App\Http\Controllers\Frontend\FrontendFormationController;
@@ -18,7 +20,6 @@ use App\Http\Controllers\Formateur\DashboardFormateurController;
 use App\Http\Controllers\Formateur\FormationFormateurController;
 use App\Http\Controllers\AuthEtudiant\RegisterEtudiantController;
 use App\Http\Controllers\AuthFormateur\RegisterFormateurController;
-use App\Http\Controllers\Frontend\FrontendCartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,10 @@ Route::controller(FrontendFormationController::class)->group(function () {
 
 Route::controller(FrontendCartController::class)->middleware(['auth_etudiant'])->group(function () {
     Route::get('carts', 'index');
+});
+
+Route::controller(FrontendCheckoutController::class)->middleware(['auth_etudiant'])->group(function () {
+    Route::get('checkouts', 'index');
 });
 
 // Route pour l'authentification Formateur

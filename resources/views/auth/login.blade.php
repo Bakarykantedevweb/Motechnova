@@ -8,8 +8,8 @@
                     <!-- Card body -->
                     <div class="card-body p-6 d-flex flex-column gap-4">
                         <div>
-                            <a href="{{ url('/') }}"><img src="assets/images/brand/logo/logo.svg" width="200" class="mb-4"
-                                    alt="logo-icon" /></a>
+                            {{-- <a href="{{ url('/') }}"><img src="assets/images/brand/logo/logo.svg" width="200" class="mb-4"
+                                    alt="logo-icon" /></a> --}}
                             <div class="d-flex flex-column gap-1">
                                 <h1 class="mb-0 fw-bold text-center">Connexion Administrateur</h1>
                             </div>

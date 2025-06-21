@@ -21,6 +21,7 @@ class Create extends Component
     public $niveau, $image, $description, $large_description;
     public $video_presentation;
     public $modules = [];
+    public $modulesCollapsed = [];
 
     public $selectedOption;
     public $options = [
@@ -56,13 +57,19 @@ class Create extends Component
             'titre' => '',
             'chapitres' => [],
         ];
+
+        $this->modulesCollapsed[] = false; // false = ouvert
     }
+
 
     public function removeModule($index)
     {
         unset($this->modules[$index]);
-        $this->modules = array_values($this->modules); // Réindexer
+        unset($this->modulesCollapsed[$index]);
+        $this->modules = array_values($this->modules);
+        $this->modulesCollapsed = array_values($this->modulesCollapsed);
     }
+
 
     public function addChapitre($moduleIndex)
     {
@@ -77,6 +84,11 @@ class Create extends Component
         unset($this->modules[$moduleIndex]['chapitres'][$chapitreIndex]);
         $this->modules[$moduleIndex]['chapitres'] = array_values($this->modules[$moduleIndex]['chapitres']);
     }
+    public function toggleModule($index)
+    {
+        $this->modulesCollapsed[$index] = !$this->modulesCollapsed[$index];
+    }
+
 
     public function saveFormation()
     {
