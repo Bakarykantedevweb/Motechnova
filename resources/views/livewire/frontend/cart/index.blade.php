@@ -116,7 +116,7 @@ Page content START -->
 
                         <!-- Button -->
                         <div class="d-grid">
-                            <a href="{{ url('checkouts') }}" class="btn btn-lg btn-success">Passer à la caisse</a>
+                            <a href="{{ url('checkout') }}" class="btn btn-lg btn-success">Passer à la caisse</a>
                         </div>
 
                         <!-- Content -->
