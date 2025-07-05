@@ -1,6 +1,5 @@
 <div>
     <div>
-        @include('livewire.admin.droit.modal')
         <!-- Container fluid -->
         <section class="container-fluid p-4">
             <div class="row">

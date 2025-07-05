@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('ville')->nullable();
             $table->integer('login_attempts')->default(0);
             $table->integer('is_blocked')->default(0);
+            $table->integer('fedapay_customer_id')->nullable();
             $table->timestamps();
         });
     }

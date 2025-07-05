@@ -39,6 +39,7 @@ class Detail extends Component
         ]);
 
         toastr()->success('Formation ajoutee au panier');
+        return redirect("carts");
     }
     public function render()
     {
