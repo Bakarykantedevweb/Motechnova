@@ -20,13 +20,13 @@
                 </a>
             </li>
              <li class="nav-item">
-                <a class="nav-link" href="">
+                <a class="nav-link" href="{{ url('formateur/statistiques') }}">
                     <i class="nav-icon fe fe-pie-chart me-2"></i>
                     Statisques
                 </a>
             </li>
              <li class="nav-item">
-                <a class="nav-link" href="">
+                <a class="nav-link" href="{{ url('formateur/commandes') }}">
                     <i class="nav-icon fe fe-shopping-bag me-2"></i>
                     Commandes
                 </a>

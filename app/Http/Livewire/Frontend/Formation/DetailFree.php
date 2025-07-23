@@ -13,32 +13,38 @@ class DetailFree extends Component
     public function mount($formation)
     {
         $this->formation = $formation;
-        $this->videoUrl = 'https://www.youtube.com/embed/MUVKyLYWnfI'; // Valeur par défaut
+
+        // Vidéo par défaut (YouTube embed)
+        $this->videoUrl = 'https://www.youtube.com/embed/MUVKyLYWnfI';
     }
 
     public function changeVideo($url)
     {
         $this->videoUrl = null;
 
+        // ✅ YouTube
         if (Str::contains($url, ['youtube.com', 'youtu.be'])) {
-            // Extraire l'ID YouTube
             preg_match('/(?:v=|\/)([0-9A-Za-z_-]{11})/', $url, $matches);
             $videoId = $matches[1] ?? null;
-
             if ($videoId) {
                 $this->videoUrl = "https://www.youtube.com/embed/" . $videoId;
             }
+
+        // ✅ Vimeo
         } elseif (Str::contains($url, 'vimeo.com')) {
-            // Extraire l'ID Vimeo
             preg_match('/vimeo\.com\/(\d+)/', $url, $matches);
             $videoId = $matches[1] ?? null;
-
             if ($videoId) {
                 $this->videoUrl = "https://player.vimeo.com/video/" . $videoId;
             }
-        } elseif (Str::contains($url, 'bunnycdn.com')) {
-            // Pour Bunny, on utilise l'URL directement
+
+        // ✅ Bunny.net (.m3u8 ou lien direct signé)
+        } elseif (Str::contains($url, ['.m3u8', 'bunnycdn.net', 'b-cdn.net'])) {
             $this->videoUrl = $url;
+
+        // ❌ Type non supporté
+        } else {
+            $this->videoUrl = null;
         }
     }
 

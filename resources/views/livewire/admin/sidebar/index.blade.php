@@ -2,13 +2,13 @@
     <nav class="navbar-vertical navbar">
         <div class="vh-100" data-simplebar>
             <!-- Brand logo -->
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="{{ url('/admin/dashboard') }}">
                 <img src="{{ asset('assets/images/brand/logo/logo-inverse.svg') }}" alt="Geeks" />
             </a>
             <!-- Navbar nav -->
             <ul class="navbar-nav flex-column" id="sideNavbar">
                 <li class="nav-item">
-                    <a class="nav-link " href="{{ url('/admin/dashbord') }}">
+                    <a class="nav-link " href="{{ url('/admin/dashboard') }}">
                         <i class="nav-icon fe fe-home me-2"></i>
                         Tableau de Bord
                     </a>

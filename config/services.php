@@ -30,5 +30,25 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'fedapay' => [
+        'public_key' => env('FEDAPAY_API_KEY_SANDBOX'),
+        'secret_key' => env('FEDAPAY_API_SECRET_SANDBOX'),
+        'environment' => env('FEDAPAY_ENV', 'sandbox'),
+        'webhook_token' => env('FEDAPAY_WEBHOOK_TOKEN'),
+    ],
+    // 'fedapay' => [
+    //     'public' => env('FEDAPAY_PUBLIC_KEY'),
+    //     'secret' => env('FEDAPAY_SECRET_KEY'),
+    // ],
+
+    // 'fedapay' => [
+    //     'public_key' => env('FEDAPAY_API_KEY_SANDBOX'),     // ou live si en production
+    //     'secret_key' => env('FEDAPAY_API_SECRET_SANDBOX'),
+    //     'environment' => env('FEDAPAY_ENV', 'sandbox'),     // 'sandbox' ou 'live'
+    //     'webhook_token' => env('FEDAPAY_WEBHOOK_TOKEN'),    // Token du webhook
+    // ],
+
+
+
 
 ];

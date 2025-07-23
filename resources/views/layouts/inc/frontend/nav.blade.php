@@ -2,7 +2,7 @@
     <div class="container-fluid px-0">
         <div class="d-flex">
             <a class="navbar-brand" href="{{ url('/') }}"><img src="{{ asset('assets/images/brand/logo/logo.svg') }}"
-                    width="100" alt="Geeks" /></a>
+                    width="98" alt="Geeks" /></a>
         </div>
         <div class="order-lg-3">
             <div class="d-flex align-items-center">

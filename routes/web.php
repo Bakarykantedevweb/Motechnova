@@ -1,25 +1,33 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\CategorieController;
+use App\Http\Controllers\Admin\DashbordController;
+use App\Http\Controllers\Admin\DroitController;
+use App\Http\Controllers\Admin\FormateurController;
+use App\Http\Controllers\Admin\FormationController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Admin\DroitController;
-use App\Http\Controllers\Admin\DashbordController;
-use App\Http\Controllers\Admin\CategorieController;
-use App\Http\Controllers\Admin\FormateurController;
-use App\Http\Controllers\Admin\FormationController;
+use App\Http\Controllers\AuthEtudiant\LoginEtudiantController;
+use App\Http\Controllers\AuthEtudiant\RegisterEtudiantController;
+use App\Http\Controllers\AuthFormateur\LoginFormateurController;
+use App\Http\Controllers\AuthFormateur\RegisterFormateurController;
+use App\Http\Controllers\Etudiant\DashboardEtudiantController;
+use App\Http\Controllers\Etudiant\FormationEtudiantController;
+use App\Http\Controllers\FedapayController;
+use App\Http\Controllers\Formateur\DashboardFormateurController;
+use App\Http\Controllers\Formateur\FormateurProfileController;
+use App\Http\Controllers\Formateur\FormationFormateurController;
 use App\Http\Controllers\Frontend\FrontendCartController;
 use App\Http\Controllers\Frontend\FrontendCheckoutController;
-use App\Http\Controllers\AuthEtudiant\LoginEtudiantController;
-use App\Http\Controllers\Etudiant\DashboardEtudiantController;
 use App\Http\Controllers\Frontend\FrontendFormationController;
-use App\Http\Controllers\AuthFormateur\LoginFormateurController;
-use App\Http\Controllers\Formateur\DashboardFormateurController;
-use App\Http\Controllers\Formateur\FormationFormateurController;
-use App\Http\Controllers\AuthEtudiant\RegisterEtudiantController;
-use App\Http\Controllers\AuthFormateur\RegisterFormateurController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Livewire\Formateur\Commande\Index as CommandeIndex;
+use App\Http\Livewire\Formateur\Statisque\Index;
+use App\Http\Livewire\PaymentForm;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -42,15 +50,29 @@ Route::controller(FrontendFormationController::class)->group(function () {
     Route::get('formations', 'index');
     Route::get('formations/{nom}', 'detail');
     Route::get('formations/{nom}/free', 'detailFree')->middleware(['auth_etudiant']);
+
+    // Produits Digitaux
+
 });
 
 Route::controller(FrontendCartController::class)->middleware(['auth_etudiant'])->group(function () {
     Route::get('carts', 'index');
 });
 
-Route::controller(FrontendCheckoutController::class)->middleware(['auth_etudiant'])->group(function () {
-    Route::get('checkouts', 'index');
+// Route::controller(FrontendCheckoutController::class)->middleware(['auth_etudiant'])->group(function () {
+//     Route::get('checkouts', 'index');
+//     Route::get('checkouts/test', 'indexTest');
+// });
+
+Route::middleware('auth_etudiant')->group(function () {
+    Route::get('/checkout', [PaymentController::class, 'checkoutForm'])->name('checkout');
+    Route::post('/checkout/pay', [PaymentController::class, 'payWithFedaPay'])->name('checkout.pay');
+    
+    // ✅ Correction ici : success redirige vers PaymentController
+    Route::get('/checkout/success/{orderId}', [PaymentController::class, 'success'])->name('fedapay.success');
 });
+
+Route::post('/fedapay/callback', [PaymentController::class, 'fedapayCallback'])->name('fedapay.callback');
 
 // Route pour l'authentification Formateur
 Route::prefix('formateur')->middleware(['guest_formateur'])->group(function () {
@@ -74,6 +96,13 @@ Route::prefix('formateur')->middleware('auth_formateur')->group(function () {
         Route::get('formations','index');
         Route::get('formations/create','create');
     });
+
+    Route::controller(FormateurProfileController::class)->group(function(){
+        Route::get('profile','index');
+    });
+
+    Route::get('statistiques', Index::class);
+    Route::get('commandes', CommandeIndex::class);
 });
 
 // Route pour l'authentification Etudiant
@@ -93,9 +122,11 @@ Route::prefix('etudiant')->middleware('auth_etudiant')->group(function () {
         Route::get('/dashboard', 'index');
         Route::post('/logout','logout')->name('etudiant/logout');
     });
+
+    Route::controller(FormationEtudiantController::class)->group(function(){
+       Route::get('formations/{nom}/free', 'index'); 
+    });
 });
-
-
 
 // Routes Admin
 Route::get('/admin/dashboard', [DashbordController::class, 'index'])->name('admin.dashboard');
@@ -130,4 +161,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::controller(FormationController::class)->group(function(){
         Route::get('formations','index')->name('formation.index');
     });
+
+    Route::get('etudiants', App\Http\Livewire\Admin\Etudiant\Index::class)->name('etudiant.index');
+
 });

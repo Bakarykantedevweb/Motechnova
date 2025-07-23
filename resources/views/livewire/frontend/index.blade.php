@@ -8,21 +8,29 @@
                 <div class="col-lg-6 mb-6 mb-lg-0">
                     <div>
                         <!-- heading -->
-                        <h5 class="text-dark mb-4">
-                            <i
-                                class="fe fe-check icon-xxs icon-shape bg-light-success text-success rounded-circle me-2"></i>
-                            La plateforme éducative la plus fiable
+                        <h5 class="text-dark mb-4 d-flex flex-wrap gap-3">
+                            <span class="d-flex align-items-center">
+                                <i class="fe fe-check icon-xxs icon-shape bg-light-success text-success rounded-circle me-2"></i>
+                                Apprendre.
+                            </span>
+                            <span class="d-flex align-items-center">
+                                <i class="fe fe-check icon-xxs icon-shape bg-light-success text-success rounded-circle me-2"></i>
+                                Créer.
+                            </span>
+                            <span class="d-flex align-items-center">
+                                <i class="fe fe-check icon-xxs icon-shape bg-light-success text-success rounded-circle me-2"></i>
+                                Réussir.
+                            </span>
                         </h5>
                         <!-- heading -->
-                        <h1 class="display-3 fw-bold mb-3">Développez vos compétences et faites progresser votre carrière
+                        <h1 class="display-3 fw-bold mb-3">La plateforme N°1 pour monétiser votre savoir et réussir en ligne.
                         </h1>
                         <!-- para -->
                         <p class="pe-lg-10 mb-5">
-                            Démarrez, changez ou faites progresser votre carrière avec plus de 5 000 cours, certificats
-                            professionnels et diplômes d'universités et d'entreprises de renommée mondiale.
+                            Vendez vos formations, ebooks, templates et produits digitaux facilement, sans stress, partout dans le monde. Vous créez, on s’occupe du reste.
                         </p>
                         <!-- btn -->
-                        <a href="#" class="btn btn-primary">Rejoignez-nous gratuitement maintenant</a>
+                        <a href="#" class="btn btn-primary">Commencer à vendre</a>
                         {{-- <a href="https://www.youtube.com/watch?v=Nfzi7034Kbg" class="glightbox fs-4 text-inherit ms-3">
                             <img src="assets/images/svg/play-btn.svg" alt="play" class="me-2" />
                             Watch Demo
@@ -34,9 +42,9 @@
                     <!-- images -->
                     <div class="position-relative">
                         <img src="assets/images/background/acedamy-img/bg-thumb.svg" alt="img" />
-                        <img src="assets/images/background/acedamy-img/girl-image.png" alt="girl"
+                        <img src="assets/images/background/acedamy-img/boy-image.png" alt="girl"
                             class="w-100 w-md-auto position-absolute end-0 bottom-0" />
-                        <img src="assets/images/background/acedamy-img/frame-1.svg" alt="frame"
+                        <img src="assets/images/background/acedamy-img/trophy.svg" alt="frame"
                             class="position-absolute top-0 ms-n8 d-none d-md-inline-block" />
                         <img src="assets/images/background/acedamy-img/frame-2.svg" alt="frame"
                             class="position-absolute bottom-0 start-0 ms-lg-n8 ms-n6 mb-n7 d-none d-md-inline-block" />
@@ -45,8 +53,8 @@
                         <img src="assets/images/background/acedamy-img/sound.svg" alt="sound"
                             class="position-absolute top-50 mt-n8 ms-n8 d-none d-md-inline-block"
                             style="left: -100px" />
-                        <img src="assets/images/background/acedamy-img/trophy.svg" alt="trophy"
-                            class="position-absolute top-0 start-0 ms-n8 d-none d-md-inline-block" />
+                        <!--<img src="assets/images/background/acedamy-img/trophy.svg" alt="trophy"-->
+                        <!--    class="position-absolute top-0 start-0 ms-n8 d-none d-md-inline-block" />-->
                     </div>
                 </div>
             </div>
@@ -119,9 +127,8 @@
                 <div class="col-12">
                     <div class="mb-6">
                         <h2 class="mb-1 h1">Cours les plus populaires</h2>
-                        <p>Voici les cours les plus populaires parmi les apprenants de LearnX Cours dans le monde entier
-                            en
-                            2025
+                        <p>Les formations les plus populaires sur Motechnova
+                                Celles que les apprenants choisissent le plus pour se lancer et réussir en ligne.
                         </p>
                     </div>
                 </div>

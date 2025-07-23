@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/theme.min.css') }}">
     <link href="{{ asset('assets/libs/tiny-slider/dist/tiny-slider.css') }}" rel="stylesheet" />
     <title>Motechnova</title>
-    <style>
+    {{-- <style>
         :root {
             --primary-color: #0d6efd;
             --secondary-color: #6c757d;
@@ -45,7 +45,7 @@
 
 
         /* Navbar Styling - Exact Match */
-       
+
 
         /* Sidebar Styling - Exact Match */
         .sidebar {
@@ -133,20 +133,24 @@
             width: 100%;
             height: 0;
             padding-bottom: 56.25%;
+            /* Ratio 16:9 */
             margin-bottom: 2rem;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .video-container iframe {
+        .video-container iframe,
+        .video-container video {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100% !important;
+            height: 100% !important;
             border: none;
+            object-fit: cover;
         }
+
 
         /* Comments Section */
         .comments-section {
@@ -269,7 +273,7 @@
                 justify-content: center;
             }
         }
-    </style>
+    </style> --}}
     @livewireStyles
 </head>
 
@@ -283,7 +287,10 @@
         @yield('content')
     </main>
     <!-- Footer -->
-    @include('layouts.inc.frontend.footer')
+    @if (!isset($hideFooter) || !$hideFooter)
+        @include('layouts.inc.frontend.footer')
+    @endif
+
 
     <!-- Scripts -->
     <!-- Libs JS -->
@@ -301,7 +308,7 @@
     <script src="{{ asset('assets/js/vendors/glight.js') }}"></script>
     <script src="{{ asset('assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/js/vendors/chart.js') }}"></script>
-    <script>
+    {{-- <script>
         // Mobile sidebar toggle
         document.addEventListener('DOMContentLoaded', function() {
             const sidebarToggle = document.querySelector('.navbar-toggler-sidebar');
@@ -386,7 +393,7 @@
                 });
             });
         });
-    </script>
+    </script> --}}
     @livewireScripts
 </body>
 

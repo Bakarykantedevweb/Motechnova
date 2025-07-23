@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Module;
 use App\Models\Categorie;
 use App\Models\Formateur;
+use App\Models\OrderItems;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -27,5 +28,10 @@ class Formation extends Model
     public function formateur()
     {
         return $this->belongsTo(Formateur::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(OrderItems::class);
     }
 }

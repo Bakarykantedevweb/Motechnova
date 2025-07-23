@@ -11,4 +11,9 @@ class FrontendCheckoutController extends Controller
     {
         return view('frontend.checkout.index');
     }
+
+    public function indexTest()
+    {
+        return view('frontend.checkout.indexTest');
+    }
 }

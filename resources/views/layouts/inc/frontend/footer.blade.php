@@ -5,7 +5,7 @@
                 <div class="col-lg-4 col-md-6 col-12">
                     <!-- about company -->
                     <div class="mb-4">
-                        <img src="{{ asset('assets/images/brand/logo/logo.svg') }}" width="200" alt="Geeks" class="logo-inverse" />
+                        <img src="{{ asset('assets/images/brand/logo/logo.svg') }}" width="150" alt="Geeks" class="logo-inverse" />
                         <div class="mt-4">
                             <p>Geek is feature-rich components and beautifully Bootstrap UIKit for developers, built
                                 with bootstrap responsive framework.</p>
