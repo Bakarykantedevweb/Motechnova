@@ -1,19 +1,22 @@
 <?php
+
 namespace App\Http\Livewire\Formateur;
 
 use Carbon\Carbon;
 use Livewire\Component;
+use App\Models\Formation;
 use App\Models\OrderItems;
 use App\Models\Transaction;
-use App\Models\Formation;
 use App\Models\EtudiantFormation;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
     public $formateur_id;
 
-    public $mois = [];
-    public $ventes = [];
+    public $days = [];
+    public $sales = [];
 
     public $revenuTotal;
     public $revenuMois;
@@ -26,27 +29,36 @@ class Index extends Component
     {
         $this->formateur_id = auth('formateur')->id();
 
-        $this->chargerStatistiques();
+        $this->generateDailySales();
         $this->chargerCartes();
     }
 
-    public function chargerStatistiques()
+    public function generateDailySales()
     {
-        $resultats = OrderItems::selectRaw('MONTH(orders.created_at) as mois, COUNT(*) as total')
-            ->join('orders', 'order_items.order_id', '=', 'orders.id')
+        $formateurId = Auth::guard('formateur')->user()->id;
+        $start = Carbon::now()->startOfMonth();
+        $end = Carbon::now()->endOfMonth();
+
+        $results = DB::table('transactions')
+            ->join('order_items', 'transactions.order_id', '=', 'order_items.order_id')
             ->join('formations', 'order_items.formation_id', '=', 'formations.id')
-            ->join('transactions', 'orders.id', '=', 'transactions.order_id')
-            ->where('formations.formateur_id', $this->formateur_id)
-            ->where('transactions.statut', 'approved')
-            ->groupBy('mois')
-            ->orderBy('mois')
+            ->where('formations.formateur_id', $formateurId)
+            ->whereBetween('transactions.created_at', [$start, $end])
+            ->selectRaw('DATE(transactions.created_at) as date, COUNT(*) as total')
+            ->groupBy('date')
+            ->orderBy('date')
             ->get();
 
-        $this->mois = $resultats->pluck('mois')->map(function ($mois) {
-            return Carbon::create()->month($mois)->locale('fr')->translatedFormat('F');
-        });
+        $this->days = [];
+        $this->sales = [];
 
-        $this->ventes = $resultats->pluck('total');
+        // Boucle du 1 au 31
+        for ($date = $start->copy(); $date <= $end; $date->addDay()) {
+            $formatted = $date->format('Y-m-d');
+            $this->days[] = $date->format('d M');
+            $total = $results->firstWhere('date', $formatted)->total ?? 0;
+            $this->sales[] = $total;
+        }
     }
 
     public function chargerCartes()
@@ -68,12 +80,12 @@ class Index extends Component
 
     public function render()
     {
-       $formations = Formation::withCount('orders')
-        ->withSum('orders as total_montant', 'prix')
-        ->where('formateur_id', auth('formateur')->id())
-        ->orderByDesc('orders_count') // top ventes
-        ->take(5) // top 10
-        ->get();
+        $formations = Formation::withCount('orders')
+            ->withSum('orders as total_montant', 'prix')
+            ->where('formateur_id', auth('formateur')->id())
+            ->orderByDesc('orders_count') // top ventes
+            ->take(5) // top 10
+            ->get();
 
         return view('livewire.formateur.index', compact('formations'));
     }

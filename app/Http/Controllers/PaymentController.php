@@ -24,7 +24,7 @@ class PaymentController extends Controller
     public function checkoutForm()
     {
         $etudiant = Auth::guard('etudiant')->user();
-        $carts = Cart::where('etudiant_id', $etudiant->id)->with('formation')->get();
+        $carts = Cart::with('formation')->where('etudiant_id', $etudiant->id)->with('formation')->get();
 
         return view('frontend.checkout.index', compact('etudiant', 'carts'));
     }

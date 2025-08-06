@@ -42,7 +42,7 @@
                                     class="btn btn-sm btn-outline-primary">
                                     👁️ Voir Détail
                                 </button>
-                                <a href="#" class="btn btn-sm btn-outline-secondary">✏️ Modifier</a>
+                                <a href="{{ url('formateur/formations/edit/'.encrypt($formation->id)) }}" class="btn btn-sm btn-outline-secondary">✏️ Modifier</a>
                             </div>
                         </div>
                     </div>

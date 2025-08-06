@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class TypeProduitDigital extends Model
 {
     use HasFactory;
+
+    protected $table = 'type_produit_digital';
+
+
 }

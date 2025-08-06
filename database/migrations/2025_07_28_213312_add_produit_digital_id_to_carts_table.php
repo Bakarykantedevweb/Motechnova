@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('type_produit_digitals', function (Blueprint $table) {
-            $table->id();
-            $table->string('nom');
-            $table->timestamps();
+        Schema::table('carts', function (Blueprint $table) {
+            $table->unsignedBigInteger('produit_digital_id')->nullable()->after('formation_id');
+            $table->foreign('produit_digital_id')->references('id')->on('produit_digitaux')->onDelete('cascade');
         });
     }
 
@@ -23,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('type_produit_digitals');
+        Schema::table('carts', function (Blueprint $table) {
+            //
+        });
     }
 };

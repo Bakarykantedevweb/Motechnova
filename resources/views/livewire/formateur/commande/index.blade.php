@@ -40,11 +40,12 @@
                                             </tr>
                                         @endforeach
                                     @endforeach
-
                                 </tbody>
                             </table>
                         </div>
-
+                        <div class="d-flex justify-content-center mt-4">
+                            {{ $transactions->links() }}
+                        </div>
                     </div>
                 </div>
             </div>

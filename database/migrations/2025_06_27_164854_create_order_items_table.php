@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Order::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Formation::class)->constrained()->onDelete('cascade');
+            $table->foreignId('produit_digital_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('quantite');
             $table->string('prix');
             $table->timestamps();

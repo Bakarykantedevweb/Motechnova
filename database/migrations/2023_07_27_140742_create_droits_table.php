@@ -64,6 +64,18 @@ return new class extends Migration
                 'route' => 'etudiant.index',
                 'type_droit_id' => 1,
             ],
+            [
+                'nom' => 'Type Produits Digitaux',
+                'acces' => 1,
+                'route' => 'type-produit-digitaux.index',
+                'type_droit_id' => 2,
+            ],
+            [
+                'nom' => 'Produits Digitaux',
+                'acces' => 1,
+                'route' => 'produit-digitaux.index',
+                'type_droit_id' => 2,
+            ],
         ]);
     }
 

@@ -21,13 +21,18 @@ use App\Http\Controllers\Formateur\FormationFormateurController;
 use App\Http\Controllers\Frontend\FrontendCartController;
 use App\Http\Controllers\Frontend\FrontendCheckoutController;
 use App\Http\Controllers\Frontend\FrontendFormationController;
+use App\Http\Controllers\Frontend\FrontendProduitDigitauxController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Livewire\Admin\TypeProduitsDigitaux\TypeProduitsDigitaux;
 use App\Http\Livewire\Formateur\Commande\Index as CommandeIndex;
+use App\Http\Livewire\Formateur\Formation\Edit;
+use App\Http\Livewire\Formateur\ProduitsDigitaux\ProduitsDigitaux;
+use App\Http\Livewire\Formateur\ProduitsDigitaux\ProduitsDigitauxCreate;
+use App\Http\Livewire\Formateur\Profile\Profile;
 use App\Http\Livewire\Formateur\Statisque\Index;
 use App\Http\Livewire\PaymentForm;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -45,24 +50,24 @@ Route::get('/', function () {
     return view('frontend.index');
 });
 
-// Routes Frontend
+// Routes Frontend Formations
 Route::controller(FrontendFormationController::class)->group(function () {
     Route::get('formations', 'index');
     Route::get('formations/{nom}', 'detail');
     Route::get('formations/{nom}/free', 'detailFree')->middleware(['auth_etudiant']);
-
-    // Produits Digitaux
-
+    Route::get('formateur/{nom}/detail/{id}', 'detailFormateur');
 });
 
+// Routes Frontend Produits Digitaux
+Route::controller(FrontendProduitDigitauxController::class)->group(function (){
+    Route::get('produits-digitaux','index');
+    Route::get('produits-digitaux/{titre}','detail');
+});
+
+// Routes Frontend Cart
 Route::controller(FrontendCartController::class)->middleware(['auth_etudiant'])->group(function () {
     Route::get('carts', 'index');
 });
-
-// Route::controller(FrontendCheckoutController::class)->middleware(['auth_etudiant'])->group(function () {
-//     Route::get('checkouts', 'index');
-//     Route::get('checkouts/test', 'indexTest');
-// });
 
 Route::middleware('auth_etudiant')->group(function () {
     Route::get('/checkout', [PaymentController::class, 'checkoutForm'])->name('checkout');
@@ -96,13 +101,14 @@ Route::prefix('formateur')->middleware('auth_formateur')->group(function () {
         Route::get('formations','index');
         Route::get('formations/create','create');
     });
+    Route::get('formations/edit/{formationId}', Edit::class);
 
-    Route::controller(FormateurProfileController::class)->group(function(){
-        Route::get('profile','index');
-    });
-
+    Route::get('profile',Profile::class);
     Route::get('statistiques', Index::class);
     Route::get('commandes', CommandeIndex::class);
+
+    Route::get('produits-digitaux', App\Http\Livewire\Formateur\ProduitsDigitaux\ProduitsDigitaux::class);
+    Route::get('produits-digitaux/create', ProduitsDigitauxCreate::class);
 });
 
 // Route pour l'authentification Etudiant
@@ -163,5 +169,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     });
 
     Route::get('etudiants', App\Http\Livewire\Admin\Etudiant\Index::class)->name('etudiant.index');
+
+    Route::get('types-produits-digitaux',TypeProduitsDigitaux::class)->name('type-produit-digitaux.index');
+    Route::get('produits-digitaux',ProduitsDigitaux::class)->name('produit-digitaux.index');
 
 });

@@ -63,7 +63,7 @@
     <script src="{{ asset('assets/js/vendors/flatpickr.js') }}"></script>
     <script src="{{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}"></script>
     <script src="{{ asset('assets/js/vendors/choices.js') }}"></script>
-    {{-- @yield('script') --}}
+    @yield('script')
     @livewireScripts
 </body>
 

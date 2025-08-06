@@ -2,19 +2,17 @@
 
 namespace App\Http\Livewire\Admin\Etudiant;
 
-use App\Models\Etudiant;
 use Livewire\Component;
+use App\Models\Etudiant;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
-    public $etudiants;
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
 
      public $etudiant_id, $name;
 
-    public function mount()
-    {
-        $this->etudiants = Etudiant::get();
-    }
 
     public function debloquer($id)
     {
@@ -34,6 +32,9 @@ class Index extends Component
     }
     public function render()
     {
-        return view('livewire.admin.etudiant.index')->extends('layouts.admin')->section('content');
+        $etudiants = Etudiant::paginate(10);
+        return view('livewire.admin.etudiant.index', [
+            'etudiants' => $etudiants
+        ])->extends('layouts.admin')->section('content');
     }
 }

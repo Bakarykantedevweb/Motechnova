@@ -72,10 +72,10 @@
                 <!-- Card body -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h3 class="h4 mb-0">Statistiques de ventes</h3>
+                        <h3 class="h4 mb-0">Ventes journalières ({{ now()->format('F Y') }})</h3>
                     </div>
                     <div class="card-body">
-                        <div id="orderColumn" wire:ignore></div>
+                        <div id="orderColumn" class="apex-charts" wire:ignore></div>
                     </div>
                 </div>
                 <div class="card mb-4">
@@ -124,62 +124,38 @@
                 </div>
             </div>
         </div>
-        @push('scripts')
-            <script>
-                document.addEventListener('livewire:load', function() {
-                    const mois = @json($mois);
-                    const ventes = @json($ventes);
-
-                    if (document.getElementById("orderColumn")) {
-                        const options = {
-                            series: [{
-                                name: "Ventes",
-                                data: ventes
-                            }],
-                            chart: {
-                                type: "bar",
-                                height: 272,
-                                toolbar: {
-                                    show: false
-                                }
-                            },
-                            colors: ["#4f46e5"], // couleur personnalisée
-                            plotOptions: {
-                                bar: {
-                                    horizontal: false,
-                                    columnWidth: "50%",
-                                    endingShape: "rounded"
-                                }
-                            },
-                            dataLabels: {
-                                enabled: false
-                            },
-                            xaxis: {
-                                categories: mois
-                            },
-                            yaxis: {
-                                labels: {
-                                    style: {
-                                        colors: "#6b7280"
-                                    }
-                                }
-                            },
-                            fill: {
-                                opacity: 1
-                            },
-                            tooltip: {
-                                y: {
-                                    formatter: function(val) {
-                                        return val + " ventes";
-                                    }
-                                }
+    </section>
+    @push('scripts')
+        <script>
+            document.addEventListener("livewire:load", function() {
+                const chart = new ApexCharts(document.querySelector("#orderColumn"), {
+                    series: [{
+                        name: 'Ventes',
+                        data: @json($sales)
+                    }],
+                    chart: {
+                        type: 'bar',
+                        height: 270
+                    },
+                    xaxis: {
+                        categories: @json($days),
+                        labels: {
+                            style: {
+                                fontSize: '13px',
+                                fontWeight: 400,
+                                colors: '#6c757d'
                             }
-                        };
-
-                        new ApexCharts(document.querySelector("#orderColumn"), options).render();
+                        }
+                    },
+                    colors: ['#4f46e5'],
+                    tooltip: {
+                        y: {
+                            formatter: val => `${val} ventes`
+                        }
                     }
                 });
-            </script>
-        @endpush
-    </section>
+                chart.render();
+            });
+        </script>
+    @endpush
 </div>

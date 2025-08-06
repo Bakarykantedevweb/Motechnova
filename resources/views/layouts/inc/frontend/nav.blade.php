@@ -121,7 +121,7 @@
                     <a class="nav-link" href="{{ url('formations') }}" id="navbarPages"> <b>Formations</b> </a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="#" id="navbarPages"> <b>Produits Digitaux</b> </a>
+                    <a class="nav-link" href="{{ url('produits-digitaux') }}" id="navbarPages"> <b>Produits Digitaux</b> </a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="#" id="navbarPages"> <b>Classements</b> </a>

@@ -1,5 +1,5 @@
 <div>
-   @include('livewire.admin.etudiant.modal')
+    @include('livewire.admin.etudiant.modal')
     <section class="container-fluid p-4">
         <div class="row">
             <!-- Page Header -->
@@ -45,7 +45,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($etudiants as $etudiant)
-                                        <tr @if($etudiant->is_blocked == 1) style="background-color: #f87171;" @endif>
+                                        <tr @if ($etudiant->is_blocked == 1) style="background-color: #f87171;" @endif>
                                             <td>{{ $etudiant->id }}</td>
                                             <td>
                                                 <div class="d-flex align-items-center flex-row gap-2">
@@ -64,7 +64,8 @@
                                                     <i class="fe fe-info"></i>
                                                 </a>
                                                 @if ($etudiant->is_blocked == 1)
-                                                    <a href="#" wire:click="debloquer({{ $etudiant->id }})" data-bs-toggle="modal" data-bs-target="#unlockTrainerModal"
+                                                    <a href="#" wire:click="debloquer({{ $etudiant->id }})"
+                                                        data-bs-toggle="modal" data-bs-target="#unlockTrainerModal"
                                                         class="btn btn-sm bg-success-light me-2 update_modal">
                                                         <i class="fe fe-unlock"></i>
                                                     </a>
@@ -75,6 +76,10 @@
                                 </tbody>
                             </table>
                         </div>
+                        <!-- Pagination -->
+                        <nav>
+                            {{ $etudiants->links() }}
+                        </nav>
                     </div>
                 </div>
             </div>

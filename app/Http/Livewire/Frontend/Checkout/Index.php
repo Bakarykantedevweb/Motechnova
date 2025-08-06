@@ -27,7 +27,7 @@ class Index extends Component
     public function mount()
     {
         if (Auth::guard('etudiant')->check()) {
-            $this->carts = Cart::where('etudiant_id', Auth::guard('etudiant')->id())
+            $this->carts = Cart::with('formation')->where('etudiant_id', Auth::guard('etudiant')->id())
                 ->latest()
                 ->get();
         }

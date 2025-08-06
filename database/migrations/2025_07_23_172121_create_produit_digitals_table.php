@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\TypeProduitDigital;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -11,8 +12,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('produit_digitals', function (Blueprint $table) {
+        Schema::create('produits_digitaux', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('formateur_id')->constrained('formateurs'); // ou users si tes formateurs sont dans users
+            $table->foreignIdFor(TypeProduitDigital::class)->constrained()->onDelete('cascade');
+            $table->string('titre');
+            $table->text('description')->nullable();
+            $table->string('image')->nullable();
+            $table->string('fichier'); // chemin vers le fichier (stockage local ou S3)
+            $table->decimal('prix', 10, 2)->default(0);
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }
@@ -22,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('produit_digitals');
+        Schema::dropIfExists('produits_digitaux');
     }
 };

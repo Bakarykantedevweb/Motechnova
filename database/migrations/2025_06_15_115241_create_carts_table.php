@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Etudiant::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Formation::class)->constrained()->onDelete('cascade');
+            $table->foreignId('produit_digital_id')->nullable()->constrained()->onDelete('cascade');
             $table->integer('quantite');
             $table->timestamps();
         });

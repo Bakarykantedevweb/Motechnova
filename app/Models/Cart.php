@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\ProduitDigital;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cart extends Model
 {
@@ -14,5 +15,10 @@ class Cart extends Model
     public function formation()
     {
         return $this->belongsTo(Formation::class);
+    }
+
+    public function produitDigital()
+    {
+        return $this->belongsTo(ProduitDigital::class);
     }
 }

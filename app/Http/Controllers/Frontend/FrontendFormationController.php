@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use App\Models\Formateur;
 use App\Models\Formation;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class FrontendFormationController extends Controller
 {
@@ -31,5 +32,16 @@ class FrontendFormationController extends Controller
             return redirect('formations');  
         }
         return view('frontend.formation.detailFree',compact('formation'));
+    }
+
+    public function detailFormateur($nom,$id)
+    {
+        $ID = decrypt($id);
+        $formateur = Formateur::where('id',$ID)->where('nom',$nom)->first();
+        if(!$formateur){
+            toastr()->error("Page non trouve");
+            return redirect('formations');  
+        }
+        return view('frontend.formateur.index',compact('formateur'));
     }
 }

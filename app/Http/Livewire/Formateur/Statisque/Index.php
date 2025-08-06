@@ -22,9 +22,9 @@ class Index extends Component
 
         $year = now()->year;
 
-        $earnings = DB::table('order_items')
-            ->selectRaw('MONTH(created_at) as month, SUM(prix) as total')
-            ->whereYear('created_at', $year)
+        $earnings = DB::table('transactions')
+            ->selectRaw('MONTH(paye_a) as month, SUM(montant) as total')
+            ->whereYear('paye_a', $year)
             ->groupBy('month')
             ->orderBy('month')
             ->get();

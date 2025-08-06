@@ -43,9 +43,6 @@ Page content START -->
                             <button type="button" class="btn btn-link mb-0 text-primary-hover text-end"
                                 data-bs-dismiss="alert" aria-label="Close"><i class="bi bi-x-lg"></i></button>
                         </div> --}}
-
-
-
                         <div class="table-responsive border-0 rounded-3">
                             <!-- Table START -->
                             <table class="table align-middle p-4 mb-0">
@@ -55,40 +52,61 @@ Page content START -->
                                     @php
                                         $total = 0;
                                         foreach ($carts as $cart) {
-                                            $total += $cart->formation->prix_original;
+                                            if ($cart->formation_id) {
+                                                $total += $cart->formation->prix_original;
+                                            } elseif ($cart->produit_digital_id) {
+                                                $total += $cart->produitDigital->prix;
+                                            }
                                         }
                                     @endphp
 
-                                    <!-- Table item -->
                                     @foreach ($carts as $cart)
                                         <tr>
-                                            <!-- Course item -->
+                                            <!-- Item info -->
                                             <td>
                                                 <div class="d-lg-flex align-items-center">
-                                                    <!-- Image -->
                                                     <div class="w-100px w-md-80px mb-2 mb-md-0">
-                                                        <img src="{{ $cart->formation->image }}" width="100"
-                                                            class="rounded" alt="">
+                                                        @if ($cart->formation_id)
+                                                            <img src="{{ $cart->formation->image }}" width="100"
+                                                                class="rounded" alt="">
+                                                        @elseif ($cart->produit_digital_id)
+                                                            <img src="{{ $cart->produitDigital->image }}" width="100"
+                                                                class="rounded" alt="">
+                                                        @endif
                                                     </div>
-                                                    <!-- Title -->
                                                     <h6 class="mb-0 ms-lg-3 mt-2 mt-lg-0">
-                                                        <a href="{{ url('formations/' . $cart->formation->nom) }}">{{ $cart->formation->nom }}</a>
+                                                        @if ($cart->formation_id)
+                                                            <a
+                                                                href="{{ url('formations/' . $cart->formation->nom) }}">{{ $cart->formation->nom }}</a>
+                                                        @elseif ($cart->produit_digital_id)
+                                                            <a
+                                                                href="{{ url('produits-digitaux/' . $cart->produitDigital->titre) }}">{{ $cart->produitDigital->titre }}</a>
+                                                        @endif
                                                     </h6>
                                                 </div>
                                             </td>
 
-                                            <!-- Amount item -->
+                                            <!-- Prix -->
                                             <td class="text-center">
-                                                <h5 class="text-success mb-0">{{ $cart->formation->prix_original }}</h5>
+                                                @if ($cart->formation_id)
+                                                    <h5 class="text-success mb-0">{{ $cart->formation->prix_original }}
+                                                    </h5>
+                                                @elseif ($cart->produit_digital_id)
+                                                    <h5 class="text-success mb-0">{{ $cart->produitDigital->prix }}</h5>
+                                                @endif
                                             </td>
-                                            <!-- Action item -->
+
+                                            <!-- Action -->
                                             <td>
-                                                <button type="button" wire:click="removeCart({{ $cart->id }})" class="btn btn-sm btn-danger-soft px-2 mb-0"><i
-                                                        class="fe fe-trash"></i></button>
+                                                <button type="button" wire:click="removeCart({{ $cart->id }})"
+                                                    class="btn btn-sm btn-danger-soft px-2 mb-0">
+                                                    <i class="fe fe-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
+
                             </table>
                         </div>
                     </div>

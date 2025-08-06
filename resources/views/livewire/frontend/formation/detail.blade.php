@@ -741,26 +741,29 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="position-relative">
-                                    <img src="../assets/images/avatar/avatar-1.jpg" alt="avatar"
+                                    @if ($formation->formateur->photo)
+                                        <img src="{{ asset('uploads/formateur/' . $formation->formateur->photo) }}" alt="avatar"
                                         class="rounded-circle avatar-xl" />
+                                    @else
+                                    <img src="assets/images/avatar/avatar-1.jpg" alt="avatar"
+                                        class="rounded-circle avatar-xl" />
+                                    @endif
                                     <a href="#" class="position-absolute mt-2 ms-n3" data-bs-toggle="tooltip"
                                         data-placement="top" title="Verifed">
-                                        <img src="../assets/images/svg/checked-mark.svg" alt="checked-mark"
+                                        <img src="{{ asset('assets/images/svg/checked-mark.svg') }}" alt="checked-mark"
                                             height="30" width="30" />
                                     </a>
                                 </div>
                                 <div class="ms-4">
                                     <h4 class="mb-0">
                                         {{ $formation->formateur->nom . ' ' . $formation->formateur->prenom }}</h4>
-                                    <p class="mb-1 fs-6">Front-end Developer, Designer</p>
+                                    <p class="mb-1 fs-6">{{ $formation->formateur->specialites }}</p>
                                 </div>
                             </div>
                             <p>
-                                I am an Innovation designer focussing on UX/UI based in
-                                Berlin. As a creative resident at Figma explored the city of
-                                the future and how new technologies.
+                               {{ \Illuminate\Support\Str::limit($formation->formateur->description, 100) }}
                             </p>
-                            <a href="#" class="btn btn-outline-secondary btn-sm">Detail</a>
+                            <a href="{{ url('formateur/' . $formation->formateur->nom . '/detail/'.encrypt($formation->formateur->id)) }}" class="btn btn-outline-primary btn-sm">Detail</a>
                         </div>
                     </div>
                 </div>
